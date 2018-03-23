@@ -191,8 +191,6 @@ def generateBoundingBox(imap, reg, scale, t):
     return boundingbox, reg
 
 # function pick = nms(boxes,threshold,type)
-
-
 def nms(boxes, threshold, method):
     if boxes.size == 0:
         return np.empty((0, 3))
@@ -226,8 +224,6 @@ def nms(boxes, threshold, method):
     return pick
 
 # function [dy edy dx edx y ey x ex tmpw tmph] = pad(total_boxes,w,h)
-
-
 def pad(total_boxes, w, h):
     # compute the padding coordinates (pad the bounding boxes to square)
     tmpw = (total_boxes[:, 2] - total_boxes[:, 0] + 1).astype(np.int32)
@@ -263,8 +259,6 @@ def pad(total_boxes, w, h):
     return dy, edy, dx, edx, y, ey, x, ex, tmpw, tmph
 
 # function [bboxA] = rerec(bboxA)
-
-
 def rerec(bboxA):
     # convert bboxA to square
     h = bboxA[:, 3] - bboxA[:, 1]

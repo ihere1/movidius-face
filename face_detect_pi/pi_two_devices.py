@@ -26,7 +26,6 @@ device1 = mvnc.Device(devices[1])
 device1.OpenDevice()
 
 pgraph = device.AllocateGraph(pgraphfile)
-#rgraph = device1.AllocateGraph(rgraphfile)
 ograph = device1.AllocateGraph(ographfile)
     
 def imresample(img, sz):
@@ -35,8 +34,6 @@ def imresample(img, sz):
     return im_data
 
 def detect_face(img, threshold = [0.405, 0.8473], factor=0.709):
-    # im: input image
-    # minsize: minimum of faces' size
     w = 128
     h = 96
     scale_factor = img.shape[1] / w
@@ -78,7 +75,6 @@ def detect_face(img, threshold = [0.405, 0.8473], factor=0.709):
     numbox = total_boxes.shape[0]
     
     if numbox > 0:
-        # third stage
         tempimg = np.zeros((48, 48, 3, numbox))
         for k in range(0, numbox):
             tmp = np.zeros((int(tmph[k]), int(tmpw[k]), 3))
@@ -160,8 +156,6 @@ def generateBoundingBox(imap, reg, scale, t):
     return boundingbox, reg
 
 # function pick = nms(boxes,threshold,type)
-
-
 def nms(boxes, threshold, method):
     if boxes.size == 0:
         return np.empty((0, 3))
@@ -195,8 +189,6 @@ def nms(boxes, threshold, method):
     return pick
 
 # function [dy edy dx edx y ey x ex tmpw tmph] = pad(total_boxes,w,h)
-
-
 def pad(total_boxes, w, h):
     # compute the padding coordinates (pad the bounding boxes to square)
     tmpw = (total_boxes[:, 2] - total_boxes[:, 0] + 1).astype(np.int32)
@@ -285,11 +277,10 @@ camera = PiCamera()
 camera.resolution = (640, 480)
 camera.framerate = 32
 rawCapture = PiRGBArray(camera, size=(640, 480))
-# allow the camera to warmup
 
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-	# grab the raw NumPy array representing the image, then initialize the timestamp
-	# and occupied/unoccupied text
+    # grab the raw NumPy array representing the image, then initialize the timestamp
+    # and occupied/unoccupied text
     image = frame.array
     toDetect = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     rects = detect_face(toDetect)
